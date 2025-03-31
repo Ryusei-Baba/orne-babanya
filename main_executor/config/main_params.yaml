@@ -1,0 +1,32 @@
+launch: # 起動パラメータ
+  ros__parameters:
+    joy: true   # ジョイスティックの使用を有効にする
+
+icart_mini_driver_node:
+    ros__parameters:
+            odom_frame_id: 'odom'   # odomフレームのID
+            base_frame_id: 'base_link'  # ベースフレームのID
+            Hz: 40  # ノードの更新頻度（Hz単位）
+            left_wheel_joint: 'left_wheel_joint'    # 左ホイールのジョイント名
+            right_wheel_joint: 'right_wheel_joint'   # 右ホイールのジョイント名
+            liner_vel_lim: 1.5  # 並進速度の制限（m/s）
+            liner_accel_lim: 1.5    # 並進加速度の制限（m/s^2）
+            angular_vel_lim: 3.14   # 角速度の制限（rad/s）
+            angular_accel_lim: 3.14 # 角加速度の制限（rad/s^2）
+            calculate_odom_from_ypspur: True    # YPSPURからのオドメトリ計算を有効にする
+            publish_odom_tf: False  # オドメトリのTFをパブリッシュするかどうか
+
+teleop_twist_joy_node:
+    ros__parameters:
+        axis_linear:    # 進方向のジョイスティック軸の設定
+            x: 1
+        scale_linear:   # 並進速度のスケール（通常モード）
+            x: 0.7
+        scale_linear_turbo: # 並進速度のスケール（ターボモード）
+            x: 1.2
+        axis_angular:   # 角速度（yaw軸）に対応するジョイスティックの軸番号
+            yaw: 3
+        scale_angular:  # 角速度のスケール
+            yaw: 1.0
+        enable_button: 4    # ジョイスティック操作を有効にするボタン番号
+        enable_turbo_button: 5  # ターボモードを有効にするボタン番号
