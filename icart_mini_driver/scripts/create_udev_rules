@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Author : open-rdc
+
+echo ""
+echo "Bring up the USB modules connection"
+echo ""
+
+sudo cp "$(ros2 pkg prefix icart_mini_driver)"/share/icart_mini_driver/config/70-sensors.rules /etc/udev/rules.d
+echo ""
+echo "Restarting udev"
+echo ""
+
+sudo service udev reload
+sudo service udev restart

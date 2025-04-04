@@ -26,8 +26,17 @@ def generate_launch_description():
         output='screen'
     )
 
-    # 操縦機ノードの作成
+    # joyノードの作成
     joy_node = Node(
+        package='joy',
+        executable='joy_node',
+        name='joy_node',
+        parameters=[config_file_path],
+        output='screen'
+    )
+
+    # 操縦機ノードの作成
+    teleop_node = Node(
         package='teleop_twist_joy',
         executable='teleop_node',
         name='teleop_twist_joy_node',
@@ -49,6 +58,7 @@ def generate_launch_description():
         launch_description.add_action(joy_node)
 
     launch_description.add_action(main_exec_node)
+    launch_description.add_action(teleop_node)
     launch_description.add_action(ypspur_coordinator_process)
 
     return launch_description

@@ -66,6 +66,9 @@ void IcartMiniDriver::reset_param()
     z_axis_.setX(0);
     z_axis_.setY(0);
     z_axis_.setZ(1);
+
+    if (!cmd_vel_) {cmd_vel_ = std::make_shared<geometry_msgs::msg::Twist>();}
+
     cmd_vel_->linear.x = 0.0;
     cmd_vel_->angular.z = 0.0;
     odom.pose.pose.position.x = 0;
@@ -95,10 +98,6 @@ void IcartMiniDriver::bringup_ypspur()
         Spur_set_accel(liner_accel_lim);
         Spur_set_angvel(angular_vel_lim);
         Spur_set_angaccel(angular_accel_lim);
-    }
-    else
-    {
-        RCLCPP_WARN(this->get_logger(), "Disconnected ypspur");
     }
 }
 
