@@ -1,6 +1,6 @@
 #include <rclcpp/rclcpp.hpp>
 
-#include "icart_mini_driver/icart_mini_driver_node.hpp"
+// #include "icart_mini_driver/icart_mini_driver_node.hpp"
 
 
 int main(int argc, char * argv[]){
@@ -11,13 +11,9 @@ int main(int argc, char * argv[]){
     nodes_option.allow_undeclared_parameters(true);
     nodes_option.automatically_declare_parameters_from_overrides(true);
 
-    auto icart_mini_driver_node = std::make_shared<icart_mini_driver::IcartMiniDriver>(nodes_option);
+    // auto icart_mini_driver_node = std::make_shared<icart_mini_driver::IcartMiniDriver>(nodes_option);
     
-    exec.add_node(icart_mini_driver_node);
-
-    icart_mini_driver_node->read_param();
-    icart_mini_driver_node->reset_param();
-    icart_mini_driver_node->bringup_ypspur();
+    // exec.add_node(icart_mini_driver_node);
 
     exec.spin();
     rclcpp::shutdown();

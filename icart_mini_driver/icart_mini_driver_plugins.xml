@@ -1,0 +1,10 @@
+<library path="icart_mini_driver">
+  <class
+    name="icart_mini_driver/IcartMiniDriver"
+    type="icart_mini_driver::IcartMiniDriver"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Hardware interface plugin for IcartMini using YPSpur.
+    </description>
+  </class>
+</library>

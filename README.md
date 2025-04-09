@@ -6,8 +6,8 @@
 cd 
 mkdir -p orne_ws/src & cd orne_ws
 git clone https src
-./src/icart_mini_driver/scripts/create_udev_rules
 colcon build --symlink-install
+./src/icart_mini_driver/scripts/create_udev_rules
 echo "source ~/orne_ws/install/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```

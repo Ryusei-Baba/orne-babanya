@@ -5,15 +5,20 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+# 必要な依存を検索
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_auto REQUIRED)
+find_package(controller_interface REQUIRED)
+find_package(hardware_interface REQUIRED)
+find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(diff_drive_controller REQUIRED)
+find_package(joint_state_broadcaster REQUIRED)
 
 find_library(YPSpur_LIBRARIES NAMES ypspur PATHS /usr/local/lib /usr/lib)
 find_path(YPSpur_INCLUDE_DIRS NAMES ypspur.h PATHS /usr/local/include /usr/include)
@@ -24,37 +29,38 @@ endif()
 
 ament_auto_find_build_dependencies()
 
+# プラグインとしてビルド
 ament_auto_add_library(icart_mini_driver SHARED
   src/icart_mini_driver_node.cpp
 )
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
-
-ament_export_dependencies(
-  ament_cmake_auto
-  rclcpp
-  tf2
-  tf2_geometry_msgs
-)
-
+# インクルードディレクトリ
 include_directories(
   ${YPSpur_INCLUDE_DIRS}
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
 
-# Link necessary libraries
+# リンクするライブラリ
 target_link_libraries(icart_mini_driver
-  rclcpp::rclcpp
-  tf2::tf2
-  tf2_geometry_msgs::tf2_geometry_msgs
   ${YPSpur_LIBRARIES}
 )
 
+# pluginlib 用 XML ファイルをエクスポート
+pluginlib_export_plugin_description_file(hardware_interface icart_mini_driver_plugins.xml)
+
+# 依存関係のエクスポート
+ament_export_dependencies(
+  hardware_interface
+  pluginlib
+  rclcpp
+  tf2
+  tf2_geometry_msgs
+  diff_drive_controller
+  joint_state_broadcaster
+)
+
+# インストール設定
 install(
   DIRECTORY config scripts
   DESTINATION share/${PROJECT_NAME}

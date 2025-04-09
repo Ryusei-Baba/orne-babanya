@@ -1,38 +1,42 @@
-launch: # 起動パラメータ
+launch:
   ros__parameters:
-    joy: true   # ジョイスティックの使用を有効にする
+    joy: true   # ジョイスティック機能を有効にするか（true = 有効）
 
-icart_mini_driver_node:
-    ros__parameters:
-            odom_frame_id: 'odom'   # odomフレームのID
-            base_frame_id: 'base_footprint'  # ベースフレームのID
-            Hz: 40  # ノードの更新頻度（Hz単位）
-            left_wheel_joint: 'left_wheel_joint'    # 左ホイールのジョイント名
-            right_wheel_joint: 'right_wheel_joint'   # 右ホイールのジョイント名
-            liner_vel_lim: 1.5  # 並進速度の制限（m/s）
-            liner_accel_lim: 1.5    # 並進加速度の制限（m/s^2）
-            angular_vel_lim: 3.14   # 角速度の制限（rad/s）
-            angular_accel_lim: 3.14 # 角加速度の制限（rad/s^2）
-            calculate_odom_from_ypspur: true    # YPSPURからのオドメトリ計算を有効にする
-            publish_odom_tf: true  # オドメトリのTFをパブリッシュするかどうか
-
+# ジョイスティックドライバの設定
 joy_node:
-    ros__parameters:
-        device: /dev/input/js0  # ジョイスティックデバイスのパス
-        deadzone: 0.3  # デッドゾーンの設定（0.0から1.0）
-        autorepeat_rate: 20.0  # 自動リピートレート（Hz単位）
+  ros__parameters:
+    device: /dev/input/js0     # 使用するジョイスティックデバイスのパス
+    deadzone: 0.3              # デッドゾーン設定（0.0〜1.0）
+    autorepeat_rate: 20.0      # 自動リピート間隔 [Hz]
 
+# ジョイスティック操作でTwistメッセージを生成
 teleop_twist_joy_node:
-    ros__parameters:
-        axis_linear:    # 進方向のジョイスティック軸の設定
-            x: 1
-        scale_linear:   # 並進速度のスケール（通常モード）
-            x: 0.2
-        scale_linear_turbo: # 並進速度のスケール（ターボモード）
-            x: 1.2
-        axis_angular:   # 角速度（yaw軸）に対応するジョイスティックの軸番号
-            yaw: 3
-        scale_angular:  # 角速度のスケール
-            yaw: 1.0
-        enable_button: 4    # ジョイスティック操作を有効にするボタン番号
-        enable_turbo_button: 5  # ターボモードを有効にするボタン番号
+  ros__parameters:
+    axis_linear:               # 前後方向のスティック軸
+      x: 1
+    scale_linear:              # 通常モードの直進スピード倍率
+      x: 0.2
+    scale_linear_turbo:        # ターボモード時のスピード倍率
+      x: 1.2
+    axis_angular:              # 回転方向（ヨー）のスティック軸
+      yaw: 3
+    scale_angular:             # 回転スピード倍率
+      yaw: 1.0
+    enable_button: 4           # 操作有効化トグルのボタン番号
+    enable_turbo_button: 5     # ターボモード有効化のボタン番号
+
+# ros2_control_nodeに渡すパラメータ
+/**:
+  ros__parameters:
+    update_rate: 100                 # ノードの更新周期 [Hz]
+    left_wheel_names: ["left_wheel_joint"]   # 左車輪ジョイント名（URDFに一致）
+    right_wheel_names: ["right_wheel_joint"] # 右車輪ジョイント名（URDFに一致）
+    wheel_separation: 0.4615            # 左右ホイール間の距離 [m]
+    wheel_radius: 0.145                 # ホイール半径 [m]
+    use_stamped_vel: false             # geometry_msgs/TwistStamped を使うか
+    base_frame_id: base_link           # ベースフレームの名前
+    odom_frame_id: odom                # オドメトリフレームの名前
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
