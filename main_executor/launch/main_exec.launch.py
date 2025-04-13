@@ -66,7 +66,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    delayed_action = TimerAction(period=5.0, actions=delayed_nodes) # 3秒待機してからノードを起動
+    delayed_action = TimerAction(period=3.0, actions=delayed_nodes) # 3秒待機してからノードを起動
 
     # LaunchDescriptionに追加
     launch_description = LaunchDescription()

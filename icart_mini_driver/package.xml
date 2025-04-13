@@ -4,7 +4,6 @@
   <name>icart_mini_driver</name>
   <version>0.1.0</version>
   <description>ROS 2 wrapper for ypspur </description>
-  <maintainer email="yaruo0406@gmail.com">Haruyama Kenta</maintainer>
   <maintainer email="babaryusei.kw@gmail.com">Ryusei Baba</maintainer>
   <license>BSD</license>
 

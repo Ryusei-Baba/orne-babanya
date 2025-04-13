@@ -19,13 +19,7 @@ find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(diff_drive_controller REQUIRED)
 find_package(joint_state_broadcaster REQUIRED)
-
-find_library(YPSpur_LIBRARIES NAMES ypspur PATHS /usr/local/lib /usr/lib)
-find_path(YPSpur_INCLUDE_DIRS NAMES ypspur.h PATHS /usr/local/include /usr/include)
-
-if(NOT YPSpur_LIBRARIES OR NOT YPSpur_INCLUDE_DIRS)
-  message(FATAL_ERROR "YPSpur library not found. Please install it.")
-endif()
+find_package(ypspur REQUIRED)
 
 ament_auto_find_build_dependencies()
 
@@ -43,7 +37,7 @@ include_directories(
 
 # リンクするライブラリ
 target_link_libraries(icart_mini_driver
-  ${YPSpur_LIBRARIES}
+  ypspur
 )
 
 # pluginlib 用 XML ファイルをエクスポート
@@ -59,6 +53,18 @@ ament_export_dependencies(
   diff_drive_controller
   joint_state_broadcaster
 )
+
+ament_target_dependencies(icart_mini_driver
+  rclcpp
+  hardware_interface
+  pluginlib
+  tf2
+  tf2_geometry_msgs
+  diff_drive_controller
+  joint_state_broadcaster
+)
+
+ament_export_libraries(icart_mini_driver)
 
 # インストール設定
 install(
