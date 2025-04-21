@@ -27,7 +27,7 @@ teleop_twist_joy_node:
         axis_linear:    # 進方向のジョイスティック軸の設定
             x: 1
         scale_linear:   # 並進速度のスケール（通常モード）
-            x: 0.2
+            x: 0.6
         scale_linear_turbo: # 並進速度のスケール（ターボモード）
             x: 1.2
         axis_angular:   # 角速度（yaw軸）に対応するジョイスティックの軸番号
