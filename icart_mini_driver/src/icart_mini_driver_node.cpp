@@ -115,7 +115,12 @@ hardware_interface::return_type IcartMiniDriver::write(const rclcpp::Time &, con
 
   double v = (cmd_left_ + cmd_right_) * 0.5;
   double w = (cmd_right_ - cmd_left_) / wheel_sep;
-                     
+  
+  Spur_set_vel(linear_vel_limit_);
+  Spur_set_accel(linear_accel_limit_);
+  Spur_set_angvel(angular_vel_limit_);
+  Spur_set_angaccel(angular_accel_limit_);
+  
   Spur_vel(v, w);
 
   return hardware_interface::return_type::OK;
