@@ -1,7 +1,8 @@
 def generate_launch_description():
     from launch import LaunchDescription
-    from launch.actions import TimerAction, ExecuteProcess
+    from launch.actions import ExecuteProcess, RegisterEventHandler, TimerAction
     from launch_ros.actions import Node
+    from launch.event_handlers import OnProcessStart
     import os
     import yaml
     from ament_index_python.packages import get_package_share_directory
@@ -24,28 +25,20 @@ def generate_launch_description():
     ypspur_coordinator_process = ExecuteProcess(cmd=[ypspur_coordinator_path, ypspur_param], shell=True, output='screen')
 
     # diff_driveハードウェア制御を使うros2_control_node
-    delayed_nodes = [
-        Node(
-            package='controller_manager',
-            executable='ros2_control_node',
-            parameters=[config_file_path, {'robot_description': open(urdf_file).read()}],
-            output='screen'
-        ),
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['joint_state_broadcaster', '--controller-type', 'joint_state_broadcaster/JointStateBroadcaster'],
-            parameters=[config_file_path],
-            output='screen'
-        ),
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['diff_drive_controller', '--controller-type', 'diff_drive_controller/DiffDriveController'],
-            parameters=[config_file_path],
-            output='screen'
-        )
-    ]
+    ros2_control_node = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        name='ros2_control_node',
+        parameters=[config_file_path, {'robot_description': open(urdf_file).read()}],
+        output='screen'
+    )
+    spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_state_broadcaster', 'diff_drive_controller', '--controller-manager', '/ros2_control_node'],
+        parameters=[config_file_path],
+        output='screen'
+    )
 
     # joyノード
     joy_node = Node(
@@ -62,11 +55,9 @@ def generate_launch_description():
         executable='teleop_node',
         name='teleop_twist_joy_node',
         parameters=[config_file_path],
-        remappings=[('/cmd_vel', '/diff_drive_controller/cmd_vel_unstamped')],
+        remappings=[('/cmd_vel', '/ros2_control_node/cmd_vel_unstamped')],
         output='screen'
     )
-
-    delayed_action = TimerAction(period=3.0, actions=delayed_nodes) # 3秒待機してからノードを起動
 
     # LaunchDescriptionに追加
     launch_description = LaunchDescription()
@@ -75,7 +66,8 @@ def generate_launch_description():
         launch_description.add_action(joy_node)
 
     launch_description.add_action(ypspur_coordinator_process)
-    launch_description.add_action(delayed_action)
+    launch_description.add_action(TimerAction(period=3.0,actions=[ros2_control_node]))
+    launch_description.add_action(RegisterEventHandler(OnProcessStart(target_action=ros2_control_node,on_start=[spawner])))
     launch_description.add_action(teleop_node)
 
     return launch_description

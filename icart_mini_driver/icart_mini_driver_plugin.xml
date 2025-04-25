@@ -1,0 +1,9 @@
+<library path="libicart_mini_driver">
+  <class name="icart_mini_driver/IcartMiniSystem"
+         type="icart_mini_driver::IcartMiniSystem"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Icart Mini System Hardware Interface for ros2_control.
+    </description>
+  </class>
+</library>

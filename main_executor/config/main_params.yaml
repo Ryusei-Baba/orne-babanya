@@ -26,17 +26,29 @@ teleop_twist_joy_node:
     enable_turbo_button: 5     # ターボモード有効化のボタン番号
 
 # ros2_control_nodeに渡すパラメータ
-/**:
+ros2_control_node:
   ros__parameters:
-    update_rate: 100                 # ノードの更新周期 [Hz]
-    left_wheel_names: ["left_wheel_joint"]   # 左車輪ジョイント名（URDFに一致）
-    right_wheel_names: ["right_wheel_joint"] # 右車輪ジョイント名（URDFに一致）
-    wheel_separation: 0.4615            # 左右ホイール間の距離 [m]
-    wheel_radius: 0.145                 # ホイール半径 [m]
-    use_stamped_vel: false             # geometry_msgs/TwistStamped を使うか
-    base_frame_id: base_link           # ベースフレームの名前
-    odom_frame_id: odom                # オドメトリフレームの名前
+    update_rate: 100
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
+    left_wheel_names: ["left_wheel_joint"]
+    right_wheel_names: ["right_wheel_joint"]
+    wheel_separation: 0.4615
+    wheel_radius: 0.145
+    linear:
+      x:
+        has_velocity_limits: true
+        max_velocity: 1.5
+        has_acceleration_limits: true
+        max_acceleration: 1.5
+    angular:
+      z:
+        has_velocity_limits: true
+        max_velocity: 3.14
+        has_acceleration_limits: true
+        max_acceleration: 3.14
+    use_stamped_vel: false
+    base_frame_id: base_link
+    odom_frame_id: odom

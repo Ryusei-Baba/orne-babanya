@@ -5,7 +5,10 @@
 ```
 cd 
 mkdir -p orne_ws/src & cd orne_ws
-git clone https src
+git clone https://github.com/Ryusei-Baba/orne-babanya.git src
+cd src
+git submodule update --init
+cd ..
 colcon build --symlink-install
 ./src/icart_mini_driver/scripts/create_udev_rules
 echo "source ~/orne_ws/install/setup.bash" >> ~/.bashrc
