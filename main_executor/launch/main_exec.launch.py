@@ -8,15 +8,27 @@ from launch.actions import ExecuteProcess
 def generate_launch_description():
     # パラメータファイルのパス設定
     main_executor_dir = get_package_share_directory('main_executor')
-    config_file_path = os.path.join(main_executor_dir, 'config', 'main_params.yaml')
+    config_file_dir = os.path.join(main_executor_dir, 'config')
+    config_file_path = os.path.join(config_file_dir, 'main_params.yaml')
 
     icart_mini_driver_dir = get_package_share_directory('icart_mini_driver')
     ypspur_param = os.path.join(icart_mini_driver_dir, 'config', 'box_v1.param')
     ypspur_coordinator_path = os.path.join(icart_mini_driver_dir, 'scripts', 'ypspur_coordinator_bridge')
 
+    livox_driver_dir = get_package_share_directory('livox_ros_driver2')
+    livox_param = os.path.join(livox_driver_dir, 'config', 'MID360_config.json')
+
+    rviz_config_path = os.path.join(config_file_dir, 'display.rviz')
+
     # 起動パラメータファイルのロード
     with open(config_file_path, 'r') as file:
         launch_params = yaml.safe_load(file)['launch']['ros__parameters']
+
+    # ypspur コーディネータープロセスの作成
+    ypspur_coordinator_process = ExecuteProcess(
+        cmd=[ypspur_coordinator_path, ypspur_param],
+        shell=True
+    )
 
     # メイン実行機ノードの作成
     main_exec_node = Node(
@@ -44,10 +56,35 @@ def generate_launch_description():
         output='screen'
     )
 
-    # ypspur コーディネータープロセスの作成
-    ypspur_coordinator_process = ExecuteProcess(
-        cmd=[ypspur_coordinator_path, ypspur_param],
-        shell=True
+    # LiVOXノードの作成
+    livox_node = Node(
+        package='livox_ros_driver2',
+        executable='livox_ros_driver2_node',
+        name='livox_lidar_publisher',
+        parameters=[config_file_path, 
+                    {"user_config_path": livox_param}],
+        remappings=[('/livox/lidar', '/livox/lidar'),
+                    ('/livox/imu', '/livox/imu')],
+        output='screen'
+    )
+
+    # urg_nodeの作成
+    urg_node = Node(
+        package='urg_node',
+        executable='urg_node_driver',
+        name='urg_node',
+        parameters=[config_file_path],
+        remappings=[('/scan', '/scan')],
+        output='screen'
+    )
+
+    # RVizノードの作成
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=['--display-config', rviz_config_path],
+        output='screen'
     )
 
     # LaunchDescription の作成
@@ -56,9 +93,15 @@ def generate_launch_description():
     # 条件に応じてノードを追加
     if launch_params.get('joy', False):
         launch_description.add_action(joy_node)
+    if launch_params.get('rviz', False):
+        launch_description.add_action(rviz_node)
+    if launch_params.get('livox', False):
+        launch_description.add_action(livox_node)
+    if launch_params.get('urg', False):
+        launch_description.add_action(urg_node)
 
+    launch_description.add_action(ypspur_coordinator_process)
     launch_description.add_action(main_exec_node)
     launch_description.add_action(teleop_node)
-    launch_description.add_action(ypspur_coordinator_process)
 
     return launch_description

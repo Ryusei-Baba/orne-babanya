@@ -1,6 +1,9 @@
 launch: # 起動パラメータ
   ros__parameters:
     joy: true   # ジョイスティックの使用を有効にする
+    livox: true  # Livox LiDARの使用を有効にする
+    urg: true   # URG LiDARの使用を有効にする
+    rviz: true  # RVizの使用を有効にする
 
 icart_mini_driver_node:
     ros__parameters:
@@ -36,3 +39,34 @@ teleop_twist_joy_node:
             yaw: 1.0
         enable_button: 4    # ジョイスティック操作を有効にするボタン番号
         enable_turbo_button: 5  # ターボモードを有効にするボタン番号
+
+livox_lidar_publisher:
+  ros__parameters:
+    xfer_format: 0              # 0: PointCloud2形式で出力（Rviz2対応）、1: Livox独自形式（カスタムMsg）
+    multi_topic: 0              # 0: 全てのLiDARが同じトピックを使用、1: LiDARごとに個別のトピックを使用
+    data_src: 0                 # 0: LiDARからの生データ、他は無効（未使用）
+    publish_freq: 10.0          # データの発行頻度（Hz）。例: 5.0, 10.0, 20.0など
+    output_data_type: 0         # 出力先タイプ（通常は0でROSに出力）
+    frame_id: "livox_frame"     # 出力データに使用するTFのフレームID
+    lvx_file_path: "/home/livox/livox_test.lvx"  # 録画ファイルのパス（使用しない場合は空でも可）
+    # user_config_path: "/your/path/to/MID360_config.json"  # LiDARのネットワークやIP設定などの詳細構成（launchで有効化済み）
+    cmdline_input_bd_code: "livox0000000001"     # LiDARデバイスのIDを手動で指定（必要に応じて）
+
+urg_node:
+  ros__parameters:
+    serial_port: '/dev/ttyACM0'  # シリアルポートの指定
+    serial_baud: 115200 # ボーレートの指定
+    frame_id : 'laser'  # 出力データのフレームID
+    calibrate_time : false  # 時間のキャリブレーションを行うかどうか
+    synchronize_time : false    # 時間の同期を行うかどうか
+    publish_intensity : false   # 強度データをパブリッシュするかどうか
+    publish_multiecho : false   # マルチエコーをパブリッシュするかどうか
+    error_limit : 4 # エラーの制限値
+    error_reset_period : 5.0    # エラーリセットの周期
+    diagnostics_tolerance : 0.05    # 診断の許容値
+    diagnostics_window_time : 5.0   # 診断のウィンドウ時間
+    time_offset : 0.0   # 時間オフセット
+    angle_min : -3.14   # 最小角度
+    angle_max : 3.14    # 最大角度
+    skip : 0    # スキップするデータ数
+    cluster : 1   # クラスタリングの設定
