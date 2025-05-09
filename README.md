@@ -27,7 +27,7 @@ git clone https://github.com/Ryusei-Baba/orne-babanya.git src
 cd src
 git submodule update --init --recursive
 cd ~/orne_ws
-rosdep init
+sudo rosdep init
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 colcon build --symlink-install
