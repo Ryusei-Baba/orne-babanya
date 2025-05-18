@@ -11,7 +11,7 @@ sudo apt install ros-humble-urg-node
 ```
 cd
 git clone https://github.com/Livox-SDK/Livox-SDK2.git
-cd ./Livox-SDK2/
+cd Livox-SDK2
 mkdir build
 cd build
 cmake .. && make -j

@@ -22,6 +22,16 @@ IcartMiniDriver::IcartMiniDriver(const rclcpp::NodeOptions & options)
     cmd_vel_sub_ = this->create_subscription<geometry_msgs::msg::Twist>(
         "cmd_vel", 10, std::bind(&IcartMiniDriver::cmd_vel_cb, this, std::placeholders::_1));
     loop_timer_ = this->create_wall_timer(std::chrono::milliseconds(10), std::bind(&IcartMiniDriver::loop, this));
+
+    initialize();
+}
+
+// initialize
+void IcartMiniDriver::initialize()
+{
+    read_param();
+    reset_param();
+    bringup_ypspur();
 }
 
 // cmd_vel callback
@@ -34,29 +44,17 @@ void IcartMiniDriver::cmd_vel_cb(const geometry_msgs::msg::Twist::SharedPtr msg)
 // Read parameters
 void IcartMiniDriver::read_param()
 {
-    declare_parameter("odom_frame_id", "odom");
-    declare_parameter("base_frame_id", "base_footprint");
-    declare_parameter("Hz", 40);
-    declare_parameter("left_wheel_joint", "left_wheel_joint");
-    declare_parameter("right_wheel_joint", "right_wheel_joint");
-    declare_parameter("liner_vel_lim", 1.5);
-    declare_parameter("liner_accel_lim", 1.5);
-    declare_parameter("angular_vel_lim", 3.14);
-    declare_parameter("angular_accel_lim", 3.14);
-    declare_parameter("calculate_odom_from_ypspur", true);
-    declare_parameter("debug_mode", false);
-
-    get_parameter("odom_frame_id", odom_frame_id);
-    get_parameter("base_frame_id", base_frame_id);
-    get_parameter("left_wheel_joint", left_wheel_joint);
-    get_parameter("right_wheel_joint", right_wheel_joint);
-    get_parameter("liner_vel_lim", liner_vel_lim);
-    get_parameter("liner_accel_lim", liner_accel_lim);
-    get_parameter("angular_vel_lim", angular_vel_lim);
-    get_parameter("angular_accel_lim", angular_accel_lim);
-    get_parameter("Hz", loop_hz);
-    get_parameter("calculate_odom_from_ypspur", odom_from_ypspur);
-    get_parameter("debug_mode", debug_mode);
+    odom_frame_id       = declare_parameter("odom_frame_id", "odom");
+    base_frame_id       = declare_parameter("base_frame_id", "base_footprint");
+    loop_hz             = declare_parameter("Hz", 40);
+    left_wheel_joint    = declare_parameter("left_wheel_joint", "left_wheel_joint");
+    right_wheel_joint   = declare_parameter("right_wheel_joint", "right_wheel_joint");
+    liner_vel_lim       = declare_parameter("liner_vel_lim", 1.5);
+    liner_accel_lim     = declare_parameter("liner_accel_lim", 1.5);
+    angular_vel_lim     = declare_parameter("angular_vel_lim", 3.14);
+    angular_accel_lim   = declare_parameter("angular_accel_lim", 3.14);
+    odom_from_ypspur    = declare_parameter("calculate_odom_from_ypspur", true);
+    debug_mode          = declare_parameter("debug_mode", false);
     RCLCPP_INFO(this->get_logger(), "Set param!!");
 }
 

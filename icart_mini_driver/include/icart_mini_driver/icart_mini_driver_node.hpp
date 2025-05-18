@@ -26,6 +26,10 @@ public:
     bool loop();
 
 private:
+    // Initialize
+    void initialize();
+
+    // Callback
     void cmd_vel_cb(const geometry_msgs::msg::Twist::SharedPtr msg);
 
     // Parameters

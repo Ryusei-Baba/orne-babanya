@@ -15,10 +15,6 @@ int main(int argc, char * argv[]){
     
     exec.add_node(icart_mini_driver_node);
 
-    icart_mini_driver_node->read_param();
-    icart_mini_driver_node->reset_param();
-    icart_mini_driver_node->bringup_ypspur();
-
     exec.spin();
     rclcpp::shutdown();
     return 0;
