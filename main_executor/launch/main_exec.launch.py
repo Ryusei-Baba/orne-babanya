@@ -4,6 +4,8 @@ from launch import LaunchDescription
 from ament_index_python.packages import get_package_share_directory
 from launch_ros.actions import Node
 from launch.actions import ExecuteProcess
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+
 
 def generate_launch_description():
     # パラメータファイルのパス設定
@@ -12,11 +14,16 @@ def generate_launch_description():
     config_file_path = os.path.join(config_file_dir, 'main_params.yaml')
 
     icart_mini_driver_dir = get_package_share_directory('icart_mini_driver')
-    ypspur_param = os.path.join(icart_mini_driver_dir, 'config', 'box_v1.param')
+    icart_mini_driver_config_dir = os.path.join(icart_mini_driver_dir, 'config')
+    ypspur_param = os.path.join(icart_mini_driver_config_dir, 'box_v1.param')
     ypspur_coordinator_path = os.path.join(icart_mini_driver_dir, 'scripts', 'ypspur_coordinator_bridge')
 
     livox_driver_dir = get_package_share_directory('livox_ros_driver2')
     livox_param = os.path.join(livox_driver_dir, 'config', 'MID360_config.json')
+
+    robot_description_dir = get_package_share_directory('robot_description')
+    robot_description_config_dir = os.path.join(robot_description_dir, 'urdf')
+    robot_description_path = os.path.join(robot_description_config_dir, 'orne_box_mid360.urdf.xacro')
 
     rviz_config_path = os.path.join(config_file_dir, 'display.rviz')
 
@@ -87,6 +94,38 @@ def generate_launch_description():
         output='screen'
     )
 
+    # robot_localizationノードの作成
+    robot_localization_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        parameters=[config_file_path],
+        remappings=[('/odometry/filtered', '/odometry/filtered')],
+        output='screen'
+    )
+
+    # robot_state_publisherノードの作成
+    robot_state_publisher_node = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        parameters=[{"robot_description": Command([
+            PathJoinSubstitution([FindExecutable(name='xacro')]), ' ', robot_description_path
+        ])}],
+        remappings=[('/tf', '/tf'),
+                    ('/tf_static', '/tf_static')],
+        output='screen'
+    )
+
+    # joint_state_publisherノードの作成
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        remappings=[('/joint_states', '/joint_states')],
+        output='screen'
+    )
+
     # LaunchDescription の作成
     launch_description = LaunchDescription()
 
@@ -103,5 +142,8 @@ def generate_launch_description():
     launch_description.add_action(ypspur_coordinator_process)
     launch_description.add_action(main_exec_node)
     launch_description.add_action(teleop_node)
+    launch_description.add_action(robot_localization_node)
+    launch_description.add_action(robot_state_publisher_node)
+    launch_description.add_action(joint_state_publisher_node)
 
     return launch_description

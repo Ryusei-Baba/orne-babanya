@@ -66,7 +66,38 @@ urg_node:
     diagnostics_tolerance : 0.05    # 診断の許容値
     diagnostics_window_time : 5.0   # 診断のウィンドウ時間
     time_offset : 0.0   # 時間オフセット
-    angle_min : -3.14   # 最小角度
-    angle_max : 3.14    # 最大角度
+    angle_min : -1.57   # 最小角度
+    angle_max : 1.57    # 最大角度
     skip : 0    # スキップするデータ数
     cluster : 1   # クラスタリングの設定
+
+ekf_filter_node:
+  ros__parameters:
+    frequency: 40.0 # フィルタの更新頻度（Hz）
+    sensor_timeout: 0.5 # センサーのタイムアウト時間（秒）
+    two_d_mode: true    # 2Dモードを有効にするかどうか
+    transform_time_offset: 0.0  # 変換の時間オフセット
+    transform_timeout: 0.0  # 変換のタイムアウト時間
+    map_frame: map             # 地図フレームのID
+    odom_frame: odom           # オドメトリフレームのID
+    base_link_frame: base_link  # ベースリンクフレームのID
+    world_frame: odom           # ワールドフレームのID
+    publish_tf: true           # TFをパブリッシュするかどうか
+    imu0_remove_gravitational_acceleration: true # IMUの重力加速度を除去するかどうか
+    odom0: /odom         # オドメトリのトピック名
+    odom0_config:   [false, false, false,
+                    false, false, false,
+                    true , true , false,
+                    false , false , true,
+                    false, false, false]
+    imu0: /livox/imu    # IMUのトピック名
+    imu0_config:    [false, false, false,
+                    false, false, true,
+                    false, false, false,
+                    true , true , true,
+                    false, false, true]
+                    # [x, y, z,
+                    # roll, pitch, yaw,
+                    # x_vel, y_vel, z_vel,
+                    # roll_vel, pitch_vel, yaw_vel,
+                    # x_accel, y_accel, z_accel]
