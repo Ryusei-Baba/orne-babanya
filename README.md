@@ -6,6 +6,7 @@
 #### ROSパッケージ
 ```
 sudo apt install ros-humble-urg-node
+sudo apt install ros-humble-usb-cam
 ```
 #### Livox
 ```
