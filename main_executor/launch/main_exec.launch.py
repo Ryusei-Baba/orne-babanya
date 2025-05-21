@@ -85,6 +85,17 @@ def generate_launch_description():
         output='screen'
     )
 
+    # usb_camノードの作成
+    usb_cam_node = Node(
+        package='usb_cam',
+        executable='usb_cam_node',
+        name='usb_cam_node',
+        parameters=[config_file_path],
+        remappings=[('/image_raw', '/image_raw'),
+                    ('/camera_info', '/camera_info')],
+        output='screen'
+    )
+
     # RVizノードの作成
     rviz_node = Node(
         package='rviz2',
@@ -138,12 +149,14 @@ def generate_launch_description():
         launch_description.add_action(livox_node)
     if launch_params.get('urg', False):
         launch_description.add_action(urg_node)
+    if launch_params.get('usb_cam', False):
+        launch_description.add_action(usb_cam_node)
 
     launch_description.add_action(ypspur_coordinator_process)
     launch_description.add_action(main_exec_node)
     launch_description.add_action(teleop_node)
-    launch_description.add_action(robot_localization_node)
-    launch_description.add_action(robot_state_publisher_node)
-    launch_description.add_action(joint_state_publisher_node)
+    # launch_description.add_action(robot_localization_node)
+    # launch_description.add_action(robot_state_publisher_node)
+    # launch_description.add_action(joint_state_publisher_node)
 
     return launch_description

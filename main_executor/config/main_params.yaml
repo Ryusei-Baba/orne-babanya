@@ -1,9 +1,10 @@
 launch: # 起動パラメータ
   ros__parameters:
     joy: true   # ジョイスティックの使用を有効にする
-    livox: true  # Livox LiDARの使用を有効にする
-    urg: true   # URG LiDARの使用を有効にする
-    rviz: true  # RVizの使用を有効にする
+    livox: false  # Livox LiDARの使用を有効にする
+    urg: false   # URG LiDARの使用を有効にする
+    rviz: false  # RVizの使用を有効にする
+    usb_cam: false  # USBカメラの使用を有効にする
 
 icart_mini_driver_node:
     ros__parameters:
@@ -70,6 +71,30 @@ urg_node:
     angle_max : 1.57    # 最大角度
     skip : 0    # スキップするデータ数
     cluster : 1   # クラスタリングの設定
+
+usb_cam_node:
+  ros__parameters:
+    video_device: "/dev/video4"  # USBカメラのデバイス名
+    framerate: 30.0              # フレームレート
+    io_method: "mmap"           # 入出力メソッド
+    frame_id: "camera"          # フレームID
+    pixel_format: "mjpeg2rgb"   # ピクセルフォーマット
+    av_device_format: "YUV422P" # デバイスフォーマット
+    image_width: 640            # 画像の幅
+    image_height: 480           # 画像の高さ
+    camera_name: "test_camera"  # カメラ名
+    camera_info_url: "package://usb_cam/config/camera_info.yaml"  # カメラ情報のURL
+    brightness: -1              # 明るさ
+    contrast: -1                # コントラスト
+    saturation: -1              # 彩度
+    sharpness: -1               # シャープネス
+    gain: -1                    # ゲイン
+    auto_white_balance: true     # 自動ホワイトバランスを有効にするかどうか
+    white_balance: 4000         # ホワイトバランスの値
+    autoexposure: true          # 自動露出を有効にするかどうか
+    exposure: 100               # 露出の値
+    autofocus: false            # オートフォーカスを有効にするかどうか
+    focus: -1                   # フォーカスの値
 
 ekf_filter_node:
   ros__parameters:
