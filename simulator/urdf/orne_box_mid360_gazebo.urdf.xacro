@@ -56,7 +56,7 @@
     <!-- LiDAR -->
     <sensor name="Livox_Mid360" type="gpu_lidar">
       <ignition_frame_id>Livox_Mid360_link</ignition_frame_id>
-      <topic>lidar</topic>
+      <topic>livox/lidar</topic>
       <update_rate>10</update_rate>
       <lidar>
         <scan>
@@ -86,7 +86,7 @@
 
     <!-- IMU -->
     <sensor name="imu_sensor" type="imu">
-      <topic>imu</topic>
+      <topic>livox/imu</topic>
       <ignition_frame_id>Livox_Mid360_link</ignition_frame_id>
       <update_rate>100</update_rate> <!-- 必要に応じて調整 -->
       <always_on>true</always_on>

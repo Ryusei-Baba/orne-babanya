@@ -1,6 +1,55 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <sdf version="1.9">
   <world name="default">
+    <!-- GUIプラグイン -->
+    <gui fullscreen="true">
+      <plugin name="3D View" filename="GzScene3D">
+        <camera_pose>0.4845 5.5579 3.3651 0.0 0.308 -1.548</camera_pose>
+        <ignition-gui>
+          <title>3D View</title>
+          <property type="bool" key="showTitleBar">true</property>
+          <property type="string" key="state">docked</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- <plugin name="ignition::gui::plugins::VisualizeLidar" filename="VisualizeLidar">
+        <topic>/livox/lidar</topic>
+          <ignition-gui>
+              <property key="x" type="double">0</property>
+              <property key="y" type="double">0</property>
+              <property key="width" type="double">400</property>
+              <property key="height" type="double">900</property>
+              <property key="state" type="string">docked</property>
+              <property key="visual_type" type="string">Points</property>
+          </ignition-gui>
+      </plugin> -->
+      
+      <plugin name="ignition::gui::plugins::ImageDisplay" filename="ImageDisplay">
+        <topic>/image_raw</topic>
+      </plugin>
+
+      <plugin name="ignition::gui::plugins::Teleop" filename="Teleop">
+        <topic>/cmd_vel</topic>
+          <ignition-gui>
+              <property key="x" type="double">0</property>
+              <property key="y" type="double">0</property>
+              <property key="width" type="double">400</property>
+              <property key="height" type="double">900</property>
+              <property key="state" type="string">docked</property>
+          </ignition-gui>
+      </plugin>
+
+      <plugin filename="EntityTree" name="Entity tree">
+          <ignition-gui>
+              <property key="x" type="double">0</property>
+              <property key="y" type="double">0</property>
+              <property key="width" type="double">400</property>
+              <property key="height" type="double">375</property>
+              <property key="state" type="string">docked_collapsed</property>
+          </ignition-gui>
+      </plugin>
+    </gui>
+    
     <light name="sun" type="directional">
       <cast_shadows>true</cast_shadows>
       <pose>0 0 10 0 0 0</pose>

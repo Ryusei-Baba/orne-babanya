@@ -64,7 +64,13 @@ def generate_launch_description():
         arguments=[
             '-string', robot_description,
             '-name', 'orne_box',
-            '-allow_renaming', 'false'
+            '-allow_renaming', 'false',
+            '-x', '0.0',
+            '-y', '0.0',
+            '-z', '1.0',
+            '-Y', '0.0',
+            '-R', '0.0',
+            '-P', '0.0',
         ]
     )
 
@@ -83,8 +89,8 @@ def generate_launch_description():
             # '/depth_camera/image_raw/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
             '/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
             # '/navsat@sensor_msgs/msg/NavSatFix@ignition.msgs.NavSat',
-            '/imu@sensor_msgs/msg/Imu@ignition.msgs.IMU',
-            '/lidar@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan',
+            '/livox/imu@sensor_msgs/msg/Imu@ignition.msgs.IMU',
+            '/livox/lidar/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
         ],
         output='screen'
     )
