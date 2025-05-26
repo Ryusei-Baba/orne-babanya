@@ -26,7 +26,7 @@ if(BUILD_TESTING)
 endif()
 
 install (
-  DIRECTORY launch world hooks rviz urdf config
+  DIRECTORY launch worlds hooks models config
   DESTINATION share/${PROJECT_NAME}
 )
 ament_package()
