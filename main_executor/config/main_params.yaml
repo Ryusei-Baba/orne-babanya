@@ -1,9 +1,8 @@
 launch: # 起動パラメータ
   ros__parameters:
     joy: true   # ジョイスティックの使用を有効にする
-    livox: true  # Livox LiDARの使用を有効にする
-    urg: true   # URG LiDARの使用を有効にする
-    rviz: true  # RVizの使用を有効にする
+    urg: false   # URG LiDARの使用を有効にする
+    rviz: false  # RVizの使用を有効にする
 
 icart_mini_driver_node:
     ros__parameters:
