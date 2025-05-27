@@ -15,9 +15,6 @@ def generate_launch_description():
     ypspur_param = os.path.join(icart_mini_driver_dir, 'config', 'box_v1.param')
     ypspur_coordinator_path = os.path.join(icart_mini_driver_dir, 'scripts', 'ypspur_coordinator_bridge')
 
-    livox_driver_dir = get_package_share_directory('livox_ros_driver2')
-    livox_param = os.path.join(livox_driver_dir, 'config', 'MID360_config.json')
-
     rviz_config_path = os.path.join(config_file_dir, 'display.rviz')
 
     # 起動パラメータファイルのロード
@@ -56,18 +53,6 @@ def generate_launch_description():
         output='screen'
     )
 
-    # LiVOXノードの作成
-    livox_node = Node(
-        package='livox_ros_driver2',
-        executable='livox_ros_driver2_node',
-        name='livox_lidar_publisher',
-        parameters=[config_file_path, 
-                    {"user_config_path": livox_param}],
-        remappings=[('/livox/lidar', '/livox/lidar'),
-                    ('/livox/imu', '/livox/imu')],
-        output='screen'
-    )
-
     # urg_nodeの作成
     urg_node = Node(
         package='urg_node',
@@ -93,15 +78,14 @@ def generate_launch_description():
     # 条件に応じてノードを追加
     if launch_params.get('joy', False):
         launch_description.add_action(joy_node)
+        launch_description.add_action(teleop_node)
     if launch_params.get('rviz', False):
         launch_description.add_action(rviz_node)
-    if launch_params.get('livox', False):
-        launch_description.add_action(livox_node)
     if launch_params.get('urg', False):
         launch_description.add_action(urg_node)
 
     launch_description.add_action(ypspur_coordinator_process)
     launch_description.add_action(main_exec_node)
-    launch_description.add_action(teleop_node)
+    
 
     return launch_description
