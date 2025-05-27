@@ -14,8 +14,8 @@ def generate_launch_description():
     # パス設定
     # -------------------------------------
     simulator_dir = get_package_share_directory('simulator')
-    world_file = os.path.join(simulator_dir, 'worlds', 'tsudanuma2-3.sdf')
-    # world_file = os.path.join(simulator_dir, 'worlds', 'orne_box_warehouse.sdf')
+    # world_file = os.path.join(simulator_dir, 'worlds', 'tsudanuma2-3.sdf')
+    world_file = os.path.join(simulator_dir, 'worlds', 'orne_box_factory.sdf')
     param_file = os.path.join(simulator_dir, 'config', 'sim_params.yaml')
 
     # -------------------------------------

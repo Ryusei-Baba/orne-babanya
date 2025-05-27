@@ -29,13 +29,14 @@ ros2 launch simulator simulator_gazebo.launch.py
 ```
 
 ---
-#### URDFの確認
-```
-ros2 launch robot_description display.launch.py
-```
-
----
 #### worldファイルからsdfファイルへの変換
 ```
 gz sdf -p my_world.world > my_world_converted.sdf
 ```
+
+---
+## ライセンス表記
+
+- `orne_box_factory.sdf` は、[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) ライセンスの下で提供されています。
+© OpenRobotics
+本ライセンスに基づき、適切なクレジットを表示し、変更を明記すれば、商用目的も含めて自由に利用・改変・再配布が可能です。
