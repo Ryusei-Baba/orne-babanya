@@ -1,0 +1,20 @@
+joy_node:
+  ros__parameters:
+    device: /dev/input/js0  # ジョイスティックデバイスのパス
+    deadzone: 0.3  # デッドゾーンの設定（0.0から1.0）
+    autorepeat_rate: 20.0  # 自動リピートレート（Hz単位）
+
+teleop_twist_joy_node:
+  ros__parameters:
+    axis_linear:    # 進方向のジョイスティック軸の設定
+        x: 1
+    scale_linear:   # 並進速度のスケール（通常モード）
+        x: 0.6
+    scale_linear_turbo: # 並進速度のスケール（ターボモード）
+        x: 1.2
+    axis_angular:   # 角速度（yaw軸）に対応するジョイスティックの軸番号
+        yaw: 3
+    scale_angular:  # 角速度のスケール
+        yaw: 3.14
+    enable_button: 4    # ジョイスティック操作を有効にするボタン番号
+    enable_turbo_button: 5  # ターボモードを有効にするボタン番号

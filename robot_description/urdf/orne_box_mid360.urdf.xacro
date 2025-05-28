@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot name="orne_box" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ベースロボット -->
+  <xacro:include filename="$(find simulator)/urdf/orne_box.urdf.xacro"/>
+
+  <!-- センサーマクロの読み込み -->
+  <xacro:include filename="$(find simulator)/urdf/sensors/livox_mid360.urdf.xacro"/>
+  <xacro:include filename="$(find simulator)/urdf/sensors/hokuyo.urdf.xacro"/>
+  <xacro:include filename="$(find simulator)/urdf/sensors/zed_camera.urdf.xacro"/>
+
+  <!-- センサーの設置 -->
+  <xacro:Livox_Mid360 name="Livox_Mid360" parent="base_link" xyz="-0.08 0.0 0.85" rpy="0 0 0"/>
+
+  <xacro:sensor_camera name="zed_camera" parent="base_link">
+    <origin xyz="0.0 0.0 0.8" rpy="0 0 0"/>
+  </xacro:sensor_camera>
+
+  <xacro:sensor_hokuyo name="hokuyo" parent="base_link" size="0.05 0.05 0.07">
+    <origin xyz="0.36 0.0 0.18" rpy="0 0 0"/>
+  </xacro:sensor_hokuyo>
+
+</robot>
