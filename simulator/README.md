@@ -40,3 +40,9 @@ gz sdf -p my_world.world > my_world_converted.sdf
 - `orne_box_factory.sdf` は、[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) ライセンスの下で提供されています。
 © OpenRobotics
 本ライセンスに基づき、適切なクレジットを表示し、変更を明記すれば、商用目的も含めて自由に利用・改変・再配布が可能です。
+
+- [`tsudanuma2-3_colors.sdf`](https://github.com/masakifujiwara1/real_tsudanuma2-3_sim/tree/v2.1) に含まれるすべてのファイルは、[BSD 3-Clause "New" or "Revised" License](https://opensource.org/licenses/BSD-3-Clause) に基づいて配布されています。  
+  © Masaki Fujiwara  
+  このライセンスのもとで、ソフトウェアの再配布および使用は、ソースコード形式またはバイナリ形式であっても、以下の条件を満たす限り許可されます：
+  - 元の著作権表示、条件一覧、免責事項を保持すること
+  - 著作物の宣伝や推奨に、著作者の名前を使わないこと
