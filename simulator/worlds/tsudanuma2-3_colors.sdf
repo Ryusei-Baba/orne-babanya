@@ -71,22 +71,22 @@
       </plugin>
 
       <!-- LiDAR可視化 -->
-      <plugin filename="VisualizeLidar" name="VisualizeLidar">
+      <!-- <plugin filename="VisualizeLidar" name="VisualizeLidar">
         <topic>/livox/lidar</topic>
         <ignition-gui>
           <property key="Visual Type" type="bool">Points</property>
           <property key="state" type="string">docked</property>
         </ignition-gui>
-      </plugin>
+      </plugin> -->
 
       <!-- LiDAR可視化 -->
-      <plugin filename="VisualizeLidar" name="VisualizeLidar">
+      <!-- <plugin filename="VisualizeLidar" name="VisualizeLidar">
         <topic>/scan</topic>
         <ignition-gui>
           <property key="Visual Type" type="bool">Points</property>
           <property key="state" type="string">docked</property>
         </ignition-gui>
-      </plugin>
+      </plugin> -->
 
       <!-- カメラ画像表示 -->
       <plugin filename="ImageDisplay" name="ImageDisplay">
