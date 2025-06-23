@@ -19,26 +19,18 @@ icart_mini_driver_node:
             calculate_odom_from_ypspur: true    # YPSPURからのオドメトリ計算を有効にする
             publish_odom_tf: true  # オドメトリのTFをパブリッシュするかどうか
 
+
+tele_controller_node:
+  ros__parameters:
+    linear_max_vel: 0.5         # 最大並進速度（m/s）
+    angular_max_vel: 1.57       # 最大角速度（rad/s）
+    autonomous_flag: false      # 自律走行フラグの初期値
+
 joy_node:
     ros__parameters:
         device: /dev/input/js0  # ジョイスティックデバイスのパス
         deadzone: 0.3  # デッドゾーンの設定（0.0から1.0）
         autorepeat_rate: 20.0  # 自動リピートレート（Hz単位）
-
-teleop_twist_joy_node:
-    ros__parameters:
-        axis_linear:    # 進方向のジョイスティック軸の設定
-            x: 1
-        scale_linear:   # 並進速度のスケール（通常モード）
-            x: 0.6
-        scale_linear_turbo: # 並進速度のスケール（ターボモード）
-            x: 1.2
-        axis_angular:   # 角速度（yaw軸）に対応するジョイスティックの軸番号
-            yaw: 3
-        scale_angular:  # 角速度のスケール
-            yaw: 1.0
-        enable_button: 4    # ジョイスティック操作を有効にするボタン番号
-        enable_turbo_button: 5  # ターボモードを有効にするボタン番号
 
 livox_lidar_publisher:
   ros__parameters:
@@ -70,6 +62,7 @@ urg_node:
     angle_max : 3.14    # 最大角度
     skip : 0    # スキップするデータ数
     cluster : 1   # クラスタリングの設定
+
 
 usb_cam_node:
   ros__parameters:
