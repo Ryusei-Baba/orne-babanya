@@ -7,3 +7,7 @@
 [submodule "vla_nav"]
 	path = vla_nav
 	url = https://github.com/Ryusei-Baba/vla_nav
+[submodule "zed-ros2-wrapper"]
+	path = zed-ros2-wrapper
+	url = https://github.com/open-rdc/zed-ros2-wrapper
+	branch = feat/aiformula
