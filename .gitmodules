@@ -4,3 +4,6 @@
 [submodule "gazebo_simulator"]
 	path = gazebo_simulator
 	url = https://github.com/Ryusei-Baba/gazebo_simulator
+[submodule "vla_nav"]
+	path = vla_nav
+	url = https://github.com/Ryusei-Baba/vla_nav
