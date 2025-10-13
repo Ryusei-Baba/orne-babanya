@@ -1,10 +1,7 @@
 launch: # 起動パラメータ
   ros__parameters:
     joy: true   # ジョイスティックの使用を有効にする
-    livox: false  # Livox LiDARの使用を有効にする
-    urg: false   # URG LiDARの使用を有効にする
     rviz: false  # RVizの使用を有効にする
-    usb_cam: false  # USBカメラの使用を有効にする
 
 icart_mini_driver_node:
     ros__parameters:
@@ -40,89 +37,3 @@ teleop_twist_joy_node:
             yaw: 1.0
         enable_button: 4    # ジョイスティック操作を有効にするボタン番号
         enable_turbo_button: 5  # ターボモードを有効にするボタン番号
-
-livox_lidar_publisher:
-  ros__parameters:
-    xfer_format: 0              # 0: PointCloud2形式で出力（Rviz2対応）、1: Livox独自形式（カスタムMsg）
-    multi_topic: 0              # 0: 全てのLiDARが同じトピックを使用、1: LiDARごとに個別のトピックを使用
-    data_src: 0                 # 0: LiDARからの生データ、他は無効（未使用）
-    publish_freq: 10.0          # データの発行頻度（Hz）。例: 5.0, 10.0, 20.0など
-    output_data_type: 0         # 出力先タイプ（通常は0でROSに出力）
-    frame_id: "livox_frame"     # 出力データに使用するTFのフレームID
-    lvx_file_path: "/home/livox/livox_test.lvx"  # 録画ファイルのパス（使用しない場合は空でも可）
-    # user_config_path: "/your/path/to/MID360_config.json"  # LiDARのネットワークやIP設定などの詳細構成（launchで有効化済み）
-    cmdline_input_bd_code: "livox0000000001"     # LiDARデバイスのIDを手動で指定（必要に応じて）
-
-urg_node:
-  ros__parameters:
-    serial_port: '/dev/sensors/hokuyo'  # シリアルポートの指定
-    serial_baud: 115200 # ボーレートの指定
-    frame_id : 'laser'  # 出力データのフレームID
-    calibrate_time : false  # 時間のキャリブレーションを行うかどうか
-    synchronize_time : false    # 時間の同期を行うかどうか
-    publish_intensity : false   # 強度データをパブリッシュするかどうか
-    publish_multiecho : false   # マルチエコーをパブリッシュするかどうか
-    error_limit : 4 # エラーの制限値
-    error_reset_period : 5.0    # エラーリセットの周期
-    diagnostics_tolerance : 0.05    # 診断の許容値
-    diagnostics_window_time : 5.0   # 診断のウィンドウ時間
-    time_offset : 0.0   # 時間オフセット
-    angle_min : -1.57   # 最小角度
-    angle_max : 1.57    # 最大角度
-    skip : 0    # スキップするデータ数
-    cluster : 1   # クラスタリングの設定
-
-usb_cam_node:
-  ros__parameters:
-    video_device: "/dev/video4"  # USBカメラのデバイス名
-    framerate: 30.0              # フレームレート
-    io_method: "mmap"           # 入出力メソッド
-    frame_id: "camera"          # フレームID
-    pixel_format: "mjpeg2rgb"   # ピクセルフォーマット
-    av_device_format: "YUV422P" # デバイスフォーマット
-    image_width: 640            # 画像の幅
-    image_height: 480           # 画像の高さ
-    camera_name: "test_camera"  # カメラ名
-    camera_info_url: "package://usb_cam/config/camera_info.yaml"  # カメラ情報のURL
-    brightness: -1              # 明るさ
-    contrast: -1                # コントラスト
-    saturation: -1              # 彩度
-    sharpness: -1               # シャープネス
-    gain: -1                    # ゲイン
-    auto_white_balance: true     # 自動ホワイトバランスを有効にするかどうか
-    white_balance: 4000         # ホワイトバランスの値
-    autoexposure: true          # 自動露出を有効にするかどうか
-    exposure: 100               # 露出の値
-    autofocus: false            # オートフォーカスを有効にするかどうか
-    focus: -1                   # フォーカスの値
-
-ekf_filter_node:
-  ros__parameters:
-    frequency: 40.0 # フィルタの更新頻度（Hz）
-    sensor_timeout: 0.5 # センサーのタイムアウト時間（秒）
-    two_d_mode: true    # 2Dモードを有効にするかどうか
-    transform_time_offset: 0.0  # 変換の時間オフセット
-    transform_timeout: 0.0  # 変換のタイムアウト時間
-    map_frame: map             # 地図フレームのID
-    odom_frame: odom           # オドメトリフレームのID
-    base_link_frame: base_link  # ベースリンクフレームのID
-    world_frame: odom           # ワールドフレームのID
-    publish_tf: true           # TFをパブリッシュするかどうか
-    imu0_remove_gravitational_acceleration: true # IMUの重力加速度を除去するかどうか
-    odom0: /odom         # オドメトリのトピック名
-    odom0_config:   [false, false, false,
-                    false, false, false,
-                    true , true , false,
-                    false , false , true,
-                    false, false, false]
-    imu0: /livox/imu    # IMUのトピック名
-    imu0_config:    [false, false, false,
-                    false, false, true,
-                    false, false, false,
-                    true , true , true,
-                    false, false, true]
-                    # [x, y, z,
-                    # roll, pitch, yaw,
-                    # x_vel, y_vel, z_vel,
-                    # roll_vel, pitch_vel, yaw_vel,
-                    # x_accel, y_accel, z_accel]

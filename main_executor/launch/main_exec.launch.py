@@ -18,13 +18,6 @@ def generate_launch_description():
     ypspur_param = os.path.join(icart_mini_driver_config_dir, 'box_v1.param')
     ypspur_coordinator_path = os.path.join(icart_mini_driver_dir, 'scripts', 'ypspur_coordinator_bridge')
 
-    livox_driver_dir = get_package_share_directory('livox_ros_driver2')
-    livox_param = os.path.join(livox_driver_dir, 'config', 'MID360_config.json')
-
-    robot_description_dir = get_package_share_directory('robot_description')
-    robot_description_config_dir = os.path.join(robot_description_dir, 'urdf')
-    robot_description_path = os.path.join(robot_description_config_dir, 'orne_box_mid360.urdf.xacro')
-
     rviz_config_path = os.path.join(config_file_dir, 'display.rviz')
 
     # 起動パラメータファイルのロード
@@ -63,77 +56,12 @@ def generate_launch_description():
         output='screen'
     )
 
-    # LiVOXノードの作成
-    livox_node = Node(
-        package='livox_ros_driver2',
-        executable='livox_ros_driver2_node',
-        name='livox_lidar_publisher',
-        parameters=[config_file_path, 
-                    {"user_config_path": livox_param}],
-        remappings=[('/livox/lidar', '/livox/lidar'),
-                    ('/livox/imu', '/livox/imu')],
-        output='screen'
-    )
-
-    # urg_nodeの作成
-    urg_node = Node(
-        package='urg_node',
-        executable='urg_node_driver',
-        name='urg_node',
-        parameters=[config_file_path],
-        remappings=[('/scan', '/scan')],
-        output='screen'
-    )
-
-    # usb_camノードの作成
-    usb_cam_node = Node(
-        package='usb_cam',
-        executable='usb_cam_node_exe',
-        name='usb_cam_node',
-        parameters=[config_file_path],
-        remappings=[('/image_raw', '/image_raw'),
-                    ('/camera_info', '/camera_info')],
-        output='screen'
-    )
-
     # RVizノードの作成
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
         arguments=['--display-config', rviz_config_path],
-        output='screen'
-    )
-
-    # robot_localizationノードの作成
-    robot_localization_node = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node',
-        parameters=[config_file_path],
-        remappings=[('/odometry/filtered', '/odometry/filtered')],
-        output='screen'
-    )
-
-    # robot_state_publisherノードの作成
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        parameters=[{"robot_description": Command([
-            PathJoinSubstitution([FindExecutable(name='xacro')]), ' ', robot_description_path
-        ])}],
-        remappings=[('/tf', '/tf'),
-                    ('/tf_static', '/tf_static')],
-        output='screen'
-    )
-
-    # joint_state_publisherノードの作成
-    joint_state_publisher_node = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher',
-        remappings=[('/joint_states', '/joint_states')],
         output='screen'
     )
 
@@ -145,18 +73,9 @@ def generate_launch_description():
         launch_description.add_action(joy_node)
     if launch_params.get('rviz', False):
         launch_description.add_action(rviz_node)
-    if launch_params.get('livox', False):
-        launch_description.add_action(livox_node)
-    if launch_params.get('urg', False):
-        launch_description.add_action(urg_node)
-    if launch_params.get('usb_cam', False):
-        launch_description.add_action(usb_cam_node)
 
     launch_description.add_action(ypspur_coordinator_process)
     launch_description.add_action(main_exec_node)
     launch_description.add_action(teleop_node)
-    # launch_description.add_action(robot_localization_node)
-    # launch_description.add_action(robot_state_publisher_node)
-    # launch_description.add_action(joint_state_publisher_node)
 
     return launch_description
