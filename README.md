@@ -3,24 +3,7 @@
 
 ---
 ### 事前準備
-#### ROSパッケージ
-```
-sudo apt install ros-humble-urg-node
-sudo apt install ros-humble-usb-cam
-```
-#### Livox
-```
-cd
-git clone https://github.com/Livox-SDK/Livox-SDK2.git
-cd Livox-SDK2
-mkdir build
-cd build
-cmake .. && make -j
-sudo make install
-```
-
----
-### インストール
+#### インストール
 ```
 cd 
 mkdir -p orne_ws/src & cd orne_ws
@@ -38,13 +21,6 @@ source ~/.bashrc
 
 ---
 ### udevの作成
-#### デバイス接続の確認
-```
-ls -l /dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00
-vim orne_ws/src/icart_mini_driver/config/70-sensors.rules
-```
-#### 必要であれば以下を変更
-> SUBSYSTEM=="tty", ENV{ID_SERIAL}=="Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver", SYMLINK+="sensors/hokuyo", MODE="666", GROUP="dialout"
 ```
 cd ~/orne_ws
 ./src/icart_mini_driver/scripts/create_udev_rules

@@ -1,6 +1,10 @@
 [submodule "yp-spur"]
 	path = yp-spur
 	url = https://github.com/openspur/yp-spur.git
-[submodule "livox_ros_driver2"]
-	path = livox_ros_driver2
-	url = https://github.com/Ryusei-Baba/livox_ros_driver2.git
+[submodule "gazebo_simulator"]
+	path = gazebo_simulator
+	url = https://github.com/Ryusei-Baba/gazebo_simulator
+[submodule "zed-ros2-wrapper"]
+	path = zed-ros2-wrapper
+	url = https://github.com/open-rdc/zed-ros2-wrapper
+	branch = feat/aiformula
